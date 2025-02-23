@@ -63,3 +63,8 @@ type Message struct {
 	// Timestamp indicates when the message was created.
 	Timestamp time.Time
 }
+
+// ConsumerRegistry is an interface for processors that can register consumers
+type ConsumerRegistry interface {
+	RegisterConsumer(consumer Consumer)
+}
