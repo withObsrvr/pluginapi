@@ -1,0 +1,22 @@
+syntax = "proto3";
+package pluginapi;
+
+option go_package = "github.com/withObsrvr/pluginapi/pb";
+
+import "google/protobuf/timestamp.proto";
+
+message PluginMessage {
+    bytes payload = 1;
+    map<string, Value> metadata = 2;
+    google.protobuf.Timestamp timestamp = 3;
+}
+
+message Value {
+    oneof kind {
+        string string_value = 1;
+        int64 int_value = 2;
+        double float_value = 3;
+        bool bool_value = 4;
+        bytes bytes_value = 5;
+    }
+}
