@@ -13,6 +13,7 @@ const (
 	SourcePlugin PluginType = iota
 	ProcessorPlugin
 	ConsumerPlugin
+	BufferPlugin
 )
 
 // Plugin is the basic interface that every plugin must implement.
@@ -51,6 +52,19 @@ type Consumer interface {
 	// Process handles a message (e.g. storing it).
 	Process(ctx context.Context, msg Message) error
 	// Close cleans up any resources used by the consumer.
+	Close() error
+}
+
+// Buffer interface for plugins that provide buffering between components
+type Buffer interface {
+	Plugin
+	// Write writes a message to the buffer.
+	Write(ctx context.Context, msg Message) error
+	// Read reads a message from the buffer.
+	Read(ctx context.Context) ([]Message, error)
+	// Acknowledge acknowledges a message.
+	Acknowledge(ctx context.Context, msgIDs []string) error
+	// Close closes the buffer.
 	Close() error
 }
 
